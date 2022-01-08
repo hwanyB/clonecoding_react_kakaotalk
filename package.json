@@ -1,0 +1,22 @@
+{
+  "name": "kkokkiotalk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hwanyB/clonecoding_react_kakaotalk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hwanyB/clonecoding_react_kakaotalk/issues"
+  },
+  "homepage": "https://github.com/hwanyB/clonecoding_react_kakaotalk#readme",
+  "dependencies": {
+    "lerna": "^4.0.0"
+  }
+}
