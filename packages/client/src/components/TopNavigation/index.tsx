@@ -23,6 +23,7 @@ const Title = styled.h1`
     font-size: 20px;
     margin: 0;
     padding: 0;
+    color: #ffd31a;
 `;
 const ActionItemContainer = styled.div`
 
@@ -42,16 +43,16 @@ const TopNavigation: React.FC<Props> = ({ title }) => {
             <Title>{title}</Title>
             <ActionItemContainer>
                 <ActionItem>
-                    <BiSearchAlt2 />
+                    <BiSearchAlt2 color='#ffd31a' />
                 </ActionItem>
                 <ActionItem>
-                    <RiChatNewLine />
+                    <RiChatNewLine color='#ffd31a' />
                 </ActionItem>
                 <ActionItem>
-                    <HiOutlineMusicNote />
+                    <HiOutlineMusicNote color='#ffd31a' />
                 </ActionItem>
                 <ActionItem>
-                    <AiOutlineSetting />
+                    <AiOutlineSetting color='#ffd31a' />
                 </ActionItem>
             </ActionItemContainer>
         </Base>

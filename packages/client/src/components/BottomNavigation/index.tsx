@@ -15,7 +15,7 @@ const Base = styled.nav<{ backgroundColor: string; }>`
     right: 0;
     width: 100%;
     height: 60px;
-    box-shadow: 1px -2px 10px rgba(42, 42, 42, 0.1);
+    box-shadow: 1px -2px 5px rgba(42, 42, 42, 0.1);
     background-color: ${({backgroundColor }) => backgroundColor};
 `;
 
