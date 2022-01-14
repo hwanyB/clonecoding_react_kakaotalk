@@ -1,9 +1,10 @@
 import React from 'react';
+import TopNavigation from '../components/TopNavigation';
 
 const Lobby: React.FC = () => {
     return (
         <div>
-            Looby
+            <div>Lobby</div>
         </div>
     )
 }
