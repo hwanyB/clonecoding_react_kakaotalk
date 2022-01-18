@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/hwanyB/clonecoding_react_kakaotalk#readme",
   "dependencies": {
+    "axios": "^0.25.0",
     "lerna": "^4.0.0"
   }
 }
