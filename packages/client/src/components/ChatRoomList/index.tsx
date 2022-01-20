@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import styled from '@emotion/styled/macro';
 
 const Base = styled.ul`
