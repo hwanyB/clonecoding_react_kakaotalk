@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled/macro';
 
 import BottomNavigation from '../components/BottomNavigation';
@@ -10,7 +10,8 @@ import { useMutation, useQuery } from 'react-query';
 import { fetchMyProfile, fetchUserList } from '../apis/userApi';
 import { AxiosError, AxiosResponse } from 'axios';
 import Friend from '../components/FriendList/Friend';
-import { makeChatRoom, MakeChatRoomRequest } from '../apis/roomApi';
+import { fetchChatRoomList, makeChatRoom, MakeChatRoomRequest } from '../apis/roomApi';
+import { IProfile, IRoom, IUser } from '../types';
 
 const Base = styled.div`
   width: 100%;
@@ -33,18 +34,18 @@ const Summary = styled.small`
 const Friends: React.FC = () => {
     const navigate = useNavigate();
 
-    const { data: chatRoomListData } = useQuery<AxiosResponse<Array<Iroom>>, AxiosError>('fetchChatRoomList', fetchChatRoomList);
+    const { data: chatRoomListData } = useQuery<AxiosResponse<Array<IRoom>>, AxiosError>('fetchChatRoomList', fetchChatRoomList);
 
     const { data: profileData } = useQuery<AxiosResponse<IProfile>, AxiosError>('fetchMyProfile', fetchMyProfile);
 
-    const { data: userData } = useQuery<AxiosResponse<{ count: number, rows: Array<IUser> }>, AxiosError>('fetchUserList', fetchUserList);
+    const { data: userData } = useQuery<AxiosResponse<{ count: number; rows: Array<IUser> }>, AxiosError>('fetchUserList', fetchUserList);
 
     const mutation = useMutation('makeChatRoom', (request: MakeChatRoomRequest)=>
         makeChatRoom(request)
     );
 
     const handleChatRoomCreate = (opponentId: string) => {
-        const chatRoom = chatRoomListData?.data.find(chatRoom => chatRoom.chatRoomId === opponentId);
+        const chatRoom = chatRoomListData?.data.find((chatRoom) => chatRoom.opponentId === opponentId);
         if (chatRoom) {
             navigate(`/rooms/${chatRoom.id}`);
         } else {
@@ -69,20 +70,19 @@ const Friends: React.FC = () => {
                     userData && (
                         <>
                             <Summary> 친구 : {userData.data.count}</Summary>
+                            <FriendList>
+                                {
+                                    userData.data.rows.map((row) => (
+                                        <Friend
+                                            key={row.id}
+                                            username={row.username}
+                                            thumbnailImage={row.thumbnailImageUrl}
+                                            onClick={() => handleChatRoomCreate(row.id)}
+                                        />
+                                    ))}
+                            </FriendList>
                         </>
-                    )
-                }
-                <FriendList>
-                    {
-                        userData.data.rows.map(row => (
-                            <Friend
-                            key={row.id}
-                            username={row.username}
-                            thumbnailImage={row.thumbnailImageUrl}
-                            onClick={() => handleChatRoomCreate(row.id)} />
-                        ))
-                    }
-                </FriendList>
+                    )}
                 <BottomNavigation />
             </Container>
         </Base>

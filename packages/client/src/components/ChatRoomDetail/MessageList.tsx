@@ -24,4 +24,4 @@ const MessageList: React.FC = ({ children }) => {
     )
 }
 
-export default MessageType;
+export default MessageList;

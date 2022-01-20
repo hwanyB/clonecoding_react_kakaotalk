@@ -69,7 +69,7 @@ const SendButton = styled.button<{ backgroundColor: string }>`
 `;
 
 interface Props {
-    onClick(): void;
+    onClick(content: string): void;
 }
 
 

@@ -7,6 +7,8 @@ import ChatRoomList from '../components/ChatRoomList';
 import { useQuery } from 'react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import ChatRoom from '../components/ChatRoomList/ChatRoom';
+import { IRoom } from '../types';
+import { fetchChatRoomList } from '../apis/roomApi';
 
 const Base = styled.div`
     width: 100%;
@@ -21,7 +23,7 @@ const Container = styled.div`
 `;
 
 const RoomList: React.FC = () => {
-    const { data: ChatRoomListData } = useQuery<AxiosResponse<Array<Iroom>>, AxiosError>('fetchChatRoomList', fetchChatRoomList);
+    const { data: ChatRoomListData } = useQuery<AxiosResponse<Array<IRoom>>, AxiosError>('fetchChatRoomList', fetchChatRoomList);
     return (
         <Base>
             <Container>
