@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled/macro';
 import { Global, css } from '@emotion/react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
+import { io } from 'socket.io-client';
 
 
 import { fetchMyProfile } from '../apis/userApi';
@@ -38,11 +39,24 @@ const globalstyle = css`
 `;
 
 const RoomDetail: React.FC = () => {
+    const scrollBottomRef = useRef<HTMLLIElement>(null)
     const { roomId } = useParams<string>();
 
     const { data: profileData } = useQuery<AxiosResponse<IProfile>, AxiosError>('fetchMyProfile', fetchMyProfile);
     const { data: chatRoomDetailData } = useQuery<AxiosResponse<IRoom>, AxiosError>(['fetchChatRoomDetail', roomId], () => fetchChatRoomDetail(roomId as string));
-    const { data: chatListData } = useQuery<AxiosResponse<Array<IChat>>, AxiosError>(['fetchChatMessageList', roomId], () => fetchChatMessageList(roomId as string));
+    const { data: chatListData } = useQuery<
+        AxiosResponse<Array<IChat>>, AxiosError>(['fetchChatMessageList', roomId], () =>
+        fetchChatMessageList(roomId as string));
+    const [messages, setMessages] = useState<Array<IChat>>(chatListData?.data || []);
+    useEffect(() => {
+        const socket = io(`http//localhost:8000`, { path: '/socket.io'});
+
+        socket.emit('join', roomId);
+
+        socket.on('chat', (newMessage: IChat) => {
+            setMessages((prev) => [...prev, newMessage]);
+        })
+    }, [])
 
     const mutation = useMutation('sendChatMessage', (content: string) => sendChatMessage(roomId as string, content))
 
@@ -51,6 +65,10 @@ const RoomDetail: React.FC = () => {
             mutation.mutate(content);
         }
     }
+
+    useEffect(() => {
+        scrollBottomRef.current?.scrollIntoView({ behavior: "smooth"})
+    }, [messages]);
 
     return (
         <Base>
@@ -63,7 +81,7 @@ const RoomDetail: React.FC = () => {
             <Container>
                 <MessageList>
                     {
-                        chatListData?.data.map((message) => (
+                        messages.map((message) => (
                             message.senderId === profileData?.data.userId ? (
                                 <SentMessage
                                     senderId={message.senderId}
@@ -80,6 +98,7 @@ const RoomDetail: React.FC = () => {
                             )
                         ))
                     }
+                    <li ref={scrollBottomRef} />
                 </MessageList>
             </Container>
             <InputChat onClick={handleSend} />
